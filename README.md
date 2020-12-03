@@ -1,2 +1,2 @@
 # C2PE
-C2 and Post Exploitation Code
+C2 (used very loosely) and Post Exploitation Code
