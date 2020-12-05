@@ -17,6 +17,8 @@ Starting the server
 
 ### Python
 
+Must have Python 3.7+
+
 ```python client.py```
 
 Running the client with python (no build necessary)
