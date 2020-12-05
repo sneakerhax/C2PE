@@ -11,6 +11,8 @@ python3 server.py
 ** C2 Serving on ('0.0.0.0', 8888) **
 ```
 
+Starting the server
+
 ## Building (client)
 
 ### Python
