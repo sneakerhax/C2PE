@@ -1,4 +1,4 @@
 # Discovery
 
-* hostinfo.cpp - Get hostname and user (Linux/OSX)
+* hostinfo.cpp - Get hostname and user (OSX/Linux)
 * hostinfo.go - Get hostname and user (OSX/Windows)
