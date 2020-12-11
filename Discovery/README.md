@@ -1,3 +1,3 @@
 # Discovery
 
-* hostname - Get user and hostname
+* hostinfo - Get user and hostname
