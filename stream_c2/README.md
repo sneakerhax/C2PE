@@ -27,7 +27,7 @@ Running the client with python (no build necessary)
 
 ```pyinstaller.exe --onefile --noconsole .\client.py```
 
-Builds the client into a single file executable
+Builds the client into a single file executable using [pyinstaller](https://www.pyinstaller.org/)
 
 ## Usage
 
