@@ -19,19 +19,23 @@ Starting the server
 
 Must have Python 3.7+
 
-```python client.py```
+```
+python client.py
+```
 
 Running the client with python (no build necessary)
 
 ### Pyinstaller
 
-```pyinstaller.exe --onefile --noconsole .\client.py```
+```
+pyinstaller.exe --onefile --noconsole .\client.py
+```
 
 Builds the client into a single file executable using [pyinstaller](https://www.pyinstaller.org/)
 
 ## Usage
 
-```
+```powershell
 [*] Received callback from '192.168.1.6'
 [+] Command to run?
 192.168.1.6> powershell.exe $PSVersionTable.PSVersion
