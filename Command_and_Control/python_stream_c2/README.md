@@ -1,8 +1,8 @@
-# Stream C2
+# Python Stream C2
 
-I used the TCP echo client/server using streams [example](https://docs.python.org/3/library/asyncio-stream.html#examples) and built a very basic C2
+I used this TCP echo client/server using streams [example](https://docs.python.org/3/library/asyncio-stream.html#examples) and built a very basic C2
 
-## Running (server)
+## Starting the server
 
 Must have Python 3.7+
 
@@ -13,11 +13,9 @@ python3 server.py
 
 Starting the server
 
-## Building (client)
+## Running the client
 
-### Python
-
-Must have Python 3.7+
+Must have Python 3.7+. Make sure to replace the server_ip variable on the client before running.
 
 ```
 python client.py
@@ -25,7 +23,7 @@ python client.py
 
 Running the client with python (no build necessary)
 
-### Pyinstaller
+## Building the client with Pyinstaller
 
 ```
 pyinstaller.exe --onefile --noconsole .\client.py
@@ -47,3 +45,6 @@ Major  Minor  Build  Revision
 ```
 
 Running a simple powershell command
+
+## References:
+* [PyInstaller](https://pyinstaller.org/en/stable/)
