@@ -34,15 +34,15 @@ func main() {
 
 	for {
 		reader := bufio.NewReader(os.Stdin)
-		fmt.Print(">> ")
+		fmt.Print(c.RemoteAddr().String() + ">> ")
 		text, _ := reader.ReadString('\n')
 		fmt.Fprintf(c, text+"\n")
-
+		// Decode client command output and print
 		message, _ := bufio.NewReader(c).ReadString('\n')
 		uDec, _ := b64.URLEncoding.DecodeString(message)
 		fmt.Print("[+] Output from " + string(text) + "\n" + string(uDec))
 		if strings.TrimSpace(string(text)) == "STOP" {
-			fmt.Println("TCP client exiting...")
+			fmt.Println("Disconnection from client...")
 			return
 		}
 	}

