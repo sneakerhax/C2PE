@@ -62,3 +62,7 @@ def add_command():
 @app.route("/show-commands")
 def show_commands():
     return commands
+
+
+if __name__ == "__main__":
+    app.run()
