@@ -1,4 +1,4 @@
-# Golang http get request payload
+# Golang http get request payload (http)
 
 A really lame example of a simple http get request fetch and execute payload
 

@@ -1,4 +1,4 @@
-# Basic C2 cradle (http request)
+# Basic C2 cradle (http)
 
 **In Development**
 

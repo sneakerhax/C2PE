@@ -1,4 +1,4 @@
-# Python Stream C2
+# Python Stream C2 (tcp)
 
 I used this TCP echo client/server using streams [example](https://docs.python.org/3/library/asyncio-stream.html#examples) and built a very basic C2
 

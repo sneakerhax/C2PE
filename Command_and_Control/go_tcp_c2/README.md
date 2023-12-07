@@ -1,4 +1,4 @@
-# Golang TCP C2
+# Golang TCP C2 (tcp)
 
 I used this TCP client/server [example](https://www.linode.com/docs/guides/developing-udp-and-tcp-clients-and-servers-in-go/) and built a very basic C2
 

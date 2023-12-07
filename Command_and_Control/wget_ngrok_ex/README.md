@@ -1,4 +1,4 @@
-# Ngrok wget execute
+# Ngrok wget execute (http)
 
 ```
 docker run -it -e NGROK_AUTHTOKEN=<ngrok_authtoken> ngrok/ngrok http host.docker.internal:8081 --region=us --hostname=site.ngrok.io -auth="user:password"
