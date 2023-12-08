@@ -1,4 +1,4 @@
-# Example
+# Examples
 
 C2 example code.
 
