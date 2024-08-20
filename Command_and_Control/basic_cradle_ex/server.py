@@ -23,7 +23,7 @@ def hello_world():
 def agent_id():
     client_id = id_generator()
     clients.append([client_id, request.remote_addr])
-    print(client_id, request.remote_addr + "has connected")
+    print(client_id, request.remote_addr, "has connected")
     return client_id
 
 

