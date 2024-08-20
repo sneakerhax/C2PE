@@ -1,6 +1,6 @@
 module cli
 
-go 1.14
+go 1.17
 
 require (
 	github.com/fatih/color v1.17.0
