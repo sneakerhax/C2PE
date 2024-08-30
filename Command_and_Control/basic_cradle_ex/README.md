@@ -53,7 +53,7 @@ List all agents connected to the server.
 Command added successfully
 ```
 
-Add command to be executed by an agent
+Add command to be executed by an agent/s
 
 ```
 ./cli.go list-commands                                               
@@ -64,4 +64,4 @@ Add command to be executed by an agent
 +----------+---------------------+
 ```
 
-List all commands to be executed by agent
+List all commands to be executed by an agent/s
