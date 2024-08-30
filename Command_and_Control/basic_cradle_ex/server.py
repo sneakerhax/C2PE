@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask import request
 import string
 import random
@@ -21,18 +21,15 @@ def hello_world():
 
 @app.route("/register")
 def agent_id():
-    client_id = id_generator()
-    clients.append([client_id, request.remote_addr])
-    print(client_id, request.remote_addr, "has connected")
-    return client_id
-
+    agentId = id_generator()
+    interval = 60  # default interval in seconds
+    clients.append([agentId, request.remote_addr, interval])
+    print(agentId, request.remote_addr, "has connected with interval", interval)
+    return jsonify({"agentId": agentId, "interval": interval})
 
 @app.route("/clients")
 def list_clients():
-    if clients:
-        return clients
-    else:
-        return "no clients"
+    return clients
 
 
 @app.route("/execute", methods=['POST'])

