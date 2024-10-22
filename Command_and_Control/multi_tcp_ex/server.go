@@ -65,7 +65,7 @@ func startTCPServer(port string) {
 		clients[client.ID] = client
 		clientsMutex.Unlock()
 
-		fmt.Printf("\n [+] Client %d connected\n", client.ID)
+		fmt.Printf("\n[+] Client %d connected\n", client.ID)
 
 		go handleClient(client)
 	}
@@ -95,14 +95,13 @@ func sendMessageToClient(clientID int, message string) {
 	}
 }
 
-func startCLI() {
+func startClientCLI() {
 	reader := bufio.NewReader(os.Stdin)
 	for {
-		fmt.Println("\n--- Command Line Interface ---")
+		fmt.Println("\n--- Client Commands ---")
 		fmt.Println("1. List clients")
 		fmt.Println("2. Send message to client")
 		fmt.Println("3. Exit")
-
 		fmt.Print("Enter choice: ")
 		input, _ := reader.ReadString('\n')
 		input = strings.TrimSpace(input)
@@ -137,5 +136,14 @@ func startCLI() {
 func main() {
 	go startTCPServer("8080")
 	time.Sleep(2 * time.Second)
-	startCLI() // This will drop into the CLI after the server starts
+	reader := bufio.NewReader(os.Stdin)
+	for {
+		fmt.Print("c2>")
+		input, _ := reader.ReadString('\n')
+		input = strings.TrimSpace(input)
+		switch input {
+		case "client":
+			startClientCLI()
+		}
+	}
 }
