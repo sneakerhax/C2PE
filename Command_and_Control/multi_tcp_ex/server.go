@@ -11,6 +11,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/olekukonko/tablewriter"
 )
 
 type Client struct {
@@ -75,11 +77,19 @@ func listClients() {
 	clientsMutex.Lock()
 	defer clientsMutex.Unlock()
 
-	fmt.Println("Connected Clients:")
-	fmt.Println("ID\tAddress")
+	data := [][]string{}
 	for id, client := range clients {
-		fmt.Printf("%d\t%s\n", id, client.Conn.RemoteAddr().String())
+		data = append(data, []string{fmt.Sprintf("%d", id), client.Conn.RemoteAddr().String()})
 	}
+
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"ID", "Address"})
+	table.SetAutoWrapText(false)
+	table.SetAutoFormatHeaders(true)
+	table.SetHeaderAlignment(tablewriter.ALIGN_LEFT)
+	table.SetColumnAlignment([]int{tablewriter.ALIGN_LEFT, tablewriter.ALIGN_LEFT})
+	table.AppendBulk(data)
+	table.Render()
 }
 
 func sendMessageToClient(clientID int, message string) {
@@ -100,7 +110,7 @@ func startClientCLI() {
 	for {
 		fmt.Println("\n--- Client Commands ---")
 		fmt.Println("1. List clients")
-		fmt.Println("2. Send message to client")
+		fmt.Println("2. Send message/command to client")
 		fmt.Println("3. Exit")
 		fmt.Print("Enter choice: ")
 		input, _ := reader.ReadString('\n')
@@ -127,8 +137,6 @@ func startClientCLI() {
 		case "3":
 			fmt.Println("Exiting CLI")
 			return
-		default:
-			fmt.Println("Invalid choice")
 		}
 	}
 }
