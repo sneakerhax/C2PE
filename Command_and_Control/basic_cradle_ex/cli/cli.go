@@ -1,4 +1,4 @@
-//ChatGPT generated
+//ChatGPT 4 generated
 
 package main
 
