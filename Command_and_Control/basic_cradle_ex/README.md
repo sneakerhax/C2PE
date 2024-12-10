@@ -32,7 +32,7 @@ go build client.go
 curl -X POST -d "agentId=<agentId>&command=id" http://127.0.0.1/add-command
 ```
 
-## Using the cli (ChatGPT generated)
+## Using the cli (ChatGPT 4 generated)
 
 Currently supports list-clients (list connected clients), list-commands (show commands), add-command (Add commmand for client)
 
