@@ -29,7 +29,7 @@ go build client.go
 ## Sending a command to the server (with curl)
 
 ```
-curl -X POST -d "agentId=<agentId>&command=id" http://127.0.0.1/add-command
+curl -X POST -d "agentId=<agentId>&command=id" http://127.0.0.1:8080/add-command
 ```
 
 ## Using the cli (ChatGPT 4 generated)
