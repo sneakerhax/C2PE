@@ -13,32 +13,16 @@ func main() {
 	// Get system information
 	hostname, _ := os.Hostname()
 	currentUser, _ := user.Current()
+	OS := runtime.GOOS
+	arch := runtime.GOARCH
 
 	// Print system information
-	fmt.Println("\n========= Remote Execution Payload ========")
+	fmt.Println("[+] Executing remote payload in memory using memfd_exec")
+	fmt.Println("\n========= System Information ========")
 	fmt.Println("Time:", time.Now().Format(time.RFC1123))
 	fmt.Println("Hostname:", hostname)
 	fmt.Println("Username:", currentUser.Username)
-	fmt.Println("OS:", runtime.GOOS)
-	fmt.Println("Architecture:", runtime.GOARCH)
+	fmt.Println("OS:", OS)
+	fmt.Println("Architecture:", arch)
 	fmt.Println("==========================================")
-
-	// List processes (as an example of something system-specific)
-	fmt.Println("\nListing contents of current directory:")
-	files, err := os.ReadDir(".")
-	if err != nil {
-		fmt.Printf("Error reading directory: %v\n", err)
-		return
-	}
-
-	for _, file := range files {
-		info, err := file.Info()
-		if err != nil {
-			continue
-		}
-
-		fmt.Printf("- %s (%d bytes)\n", file.Name(), info.Size())
-	}
-
-	fmt.Println("\nPayload execution complete!")
 }
