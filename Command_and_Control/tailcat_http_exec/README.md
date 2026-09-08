@@ -20,6 +20,9 @@ Serve port 8080 on the tailcat network
 
 ```
 ./client tcXXXXXXXXX
+2026/09/07 20:06:01 received command: whoami
+2026/09/07 20:06:01 command output:
+sneakerhax
 ```
 
 Start the client and pass the tailcat address output by the server as an argument
